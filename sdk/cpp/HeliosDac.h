@@ -294,6 +294,11 @@ public:
 	// Erase the firmware of the DAC, allowing it to be updated by accessing the SAM-BA bootloader. 
 	// NB: For advanced use only, most software should never call this. 
 	int EraseFirmware(unsigned int devNum);
+  unsigned int GetMaxSampleRate(unsigned int devNum);
+  unsigned int GetMinSampleRate(unsigned int devNum);
+  unsigned int GetMaxFrameSize(unsigned int devNum);
+  unsigned int GetMaxFrameExtSize(unsigned int devNum);
+  unsigned int GetMaxFrameHighResSize(unsigned int devNum);
 
 private:
 
@@ -320,6 +325,9 @@ private:
 		virtual int EraseFirmware() = 0;
 		virtual bool GetDidSendFrameRecently() = 0;
 		bool GetIsClosed() { return closed; }
+		virtual unsigned int GetMaxSampleRate() = 0;
+		virtual unsigned int GetMinSampleRate() = 0;
+		virtual unsigned int GetMaxFrameSize(unsigned int bytesPerPoint = XYRGB_SAMPLE_SIZE) = 0;
 
 	protected:
 
@@ -351,16 +359,15 @@ private:
 
 		libusb_device_handle* GetLibusbHandle();
 
+		unsigned int GetMaxSampleRate() { return HELIOS_MAX_PPS; } // TODO read exact capabilities from DAC
+		unsigned int GetMinSampleRate() { return HELIOS_MIN_PPS; } // TODO read exact capabilities from DAC
+		unsigned int GetMaxFrameSize(unsigned int bytesPerPoint = XYRGB_SAMPLE_SIZE) { return HELIOS_MAX_POINTS; } // TODO read exact capabilities from DAC
 
 	private:
 
 		int DoFrame();
 		void BackgroundFrameHandler();
 		int SendControl(std::uint8_t* buffer, unsigned int bufferSize);
-
-		unsigned int GetMaxSampleRate() { return HELIOS_MAX_PPS; } // TODO read exact capabilities from DAC
-		unsigned int GetMinSampleRate() { return HELIOS_MIN_PPS; } // TODO read exact capabilities from DAC
-		unsigned int GetMaxFrameSize() { return HELIOS_MAX_POINTS; } // TODO read exact capabilities from DAC
 
 		struct libusb_transfer* interruptTransfer = NULL;
 		struct libusb_device_handle* usbHandle;
@@ -403,15 +410,14 @@ private:
 		int Close();
 		int EraseFirmware();
 		bool GetDidSendFrameRecently();
+		unsigned int GetMaxSampleRate() { return HELIOS_MAX_PPS_IDN; }
+		unsigned int GetMinSampleRate() { return HELIOS_MIN_PPS_IDN; }
+		unsigned int GetMaxFrameSize(unsigned int bytesPerPoint = XYRGB_SAMPLE_SIZE) { return ((MAX_IDN_MESSAGE_LEN - 100) / bytesPerPoint); }
 
 	private:
 
 		int DoFrame();
 		void BackgroundFrameHandler();
-		unsigned int GetMaxSampleRate() { return HELIOS_MAX_PPS_IDN; }
-		unsigned int GetMinSampleRate() { return HELIOS_MIN_PPS_IDN; }
-		unsigned int GetMaxFrameSize(unsigned int bytesPerPoint) { return ((IDN_BUFFER_SIZE - 100) / bytesPerPoint); }
-		unsigned int GetMinFrameSize() { return 20; }
 
 		IDNCONTEXT* context;
 		int firmwareVersion = 0;

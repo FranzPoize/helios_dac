@@ -794,6 +794,91 @@ int HeliosDac::EraseFirmware(unsigned int devNum)
 	return dev->EraseFirmware();
 }
 
+unsigned int HeliosDac::GetMaxSampleRate(unsigned int devNum)
+{
+	std::unique_lock<std::mutex> lock(threadLock);
+	HeliosDacDevice* dev = NULL;
+  if (devNum < deviceList.size())
+  {
+    dev = deviceList[devNum].get();
+  }
+	lock.unlock();
+	if (dev == NULL)
+  {
+		return HELIOS_ERROR_INVALID_DEVNUM;
+  }
+
+  return dev->GetMaxSampleRate();
+}
+
+unsigned int HeliosDac::GetMinSampleRate(unsigned int devNum)
+{
+	std::unique_lock<std::mutex> lock(threadLock);
+	HeliosDacDevice* dev = NULL;
+  if (devNum < deviceList.size())
+  {
+    dev = deviceList[devNum].get();
+  }
+	lock.unlock();
+	if (dev == NULL)
+  {
+		return HELIOS_ERROR_INVALID_DEVNUM;
+  }
+
+  return dev->GetMinSampleRate();
+}
+
+unsigned int HeliosDac::GetMaxFrameSize(unsigned int devNum)
+{
+	std::unique_lock<std::mutex> lock(threadLock);
+	HeliosDacDevice* dev = NULL;
+  if (devNum < deviceList.size())
+  {
+    dev = deviceList[devNum].get();
+  }
+	lock.unlock();
+	if (dev == NULL)
+  {
+		return HELIOS_ERROR_INVALID_DEVNUM;
+  }
+
+  return dev->GetMaxFrameSize(XYRGB_SAMPLE_SIZE);
+}
+
+unsigned int HeliosDac::GetMaxFrameExtSize(unsigned int devNum)
+{
+	std::unique_lock<std::mutex> lock(threadLock);
+	HeliosDacDevice* dev = NULL;
+  if (devNum < deviceList.size())
+  {
+    dev = deviceList[devNum].get();
+  }
+	lock.unlock();
+	if (dev == NULL)
+  {
+		return HELIOS_ERROR_INVALID_DEVNUM;
+  }
+
+  return dev->GetMaxFrameSize(EXTENDED_SAMPLE_SIZE);
+}
+
+unsigned int HeliosDac::GetMaxFrameHighResSize(unsigned int devNum)
+{
+	std::unique_lock<std::mutex> lock(threadLock);
+	HeliosDacDevice* dev = NULL;
+  if (devNum < deviceList.size())
+  {
+    dev = deviceList[devNum].get();
+  }
+	lock.unlock();
+	if (dev == NULL)
+  {
+		return HELIOS_ERROR_INVALID_DEVNUM;
+  }
+
+  return dev->GetMaxFrameSize(XYRGB_HIGHRES_SAMPLE_SIZE);
+}
+
 
 /// -----------------------------------------------------------------------
 /// HeliosDacUsbDevice START (one instance for each connected USB DAC)

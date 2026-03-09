@@ -192,6 +192,30 @@ int GetFirmwareVersion(unsigned int dacNum)
 	return dacController->GetFirmwareVersion(dacNum);
 }
 
+unsigned int GetMaxSampleRate(unsigned int devNum)
+{
+	if (!inited)
+		return HELIOS_ERROR_NOT_INITIALIZED;
+
+	return dacController->GetMaxSampleRate(devNum);
+
+}
+unsigned int GetMinSampleRate(unsigned int devNum)
+{
+	if (!inited)
+		return HELIOS_ERROR_NOT_INITIALIZED;
+
+	return dacController->GetMinSampleRate(devNum);
+
+}
+unsigned int GetMaxFrameSize(unsigned int devNum)
+{
+	if (!inited)
+		return HELIOS_ERROR_NOT_INITIALIZED;
+
+	return dacController->GetMaxFrameSize(devNum);
+}
+
 int SetLibusbDebugLogLevel(int logLevel)
 {
 	if (!inited)

@@ -147,6 +147,10 @@ HELIOS_EXPORT int GetFirmwareVersion(unsigned int dacNum);
 // Returns 1 if yes, 0 if no, and a negative number on error.
 HELIOS_EXPORT int GetSupportsHigherResolutions(unsigned int dacNum);
 
+HELIOS_EXPORT unsigned int GetMaxSampleRate(unsigned int devNum);
+HELIOS_EXPORT unsigned int GetMinSampleRate(unsigned int devNum);
+HELIOS_EXPORT unsigned int GetMaxFrameSize(unsigned int devNum);
+
 // Sets libusb debug log level. May be needed for advanced debugging.
 // See libusb.h for log level values
 HELIOS_EXPORT int SetLibusbDebugLogLevel(int logLevel);
